@@ -1,14 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane id="AnchorPane" prefHeight="200" prefWidth="320" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.FXMLDocumentController">
-    <children>
-        <Button layoutX="126" layoutY="90" text="Click Me!" onAction="#handleButtonAction" fx:id="button" />
-        <Label layoutX="126" layoutY="120" minHeight="16" minWidth="69" fx:id="label" />
-    </children>
-</AnchorPane>
+<BorderPane fx:id="borderPane" maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color:white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.FXMLDocumentController">
+    <top>
+        <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
+            <menus>
+                <Menu fx:id="fileMenu" mnemonicParsing="false" text="File">
+                    <items>
+                        <MenuItem fx:id="openFile" accelerator="Shortcut+O" mnemonicParsing="false" onAction="#openFile" text="Open..." />
+                        <MenuItem fx:id="saveItem" accelerator="Shortcut+S" mnemonicParsing="false" text="Save" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem fx:id="exitItem" accelerator="Shortcut+E" mnemonicParsing="false" onAction="#closeProgram" text="Exit" />
+                    </items>
+                </Menu>
+                <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit" />
+                <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
+                    <items>
+                        <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About" />
+                    </items>
+                </Menu>
+            </menus>
+        </MenuBar>
+    </top>
+</BorderPane>
