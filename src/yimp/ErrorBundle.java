@@ -16,43 +16,33 @@ import java.util.Set;
  *
  * @author aliya
  */
-public class MyResources extends ResourceBundle {
+public class ErrorBundle extends ResourceBundle {
 
+    private String title;
     private String message;
-    private String description;
-    private String htmlText;
 
-    public MyResources(String message, String description, String htmlText) {
+    public ErrorBundle(String title, String message) {
+        this.title = title;
         this.message = message;
-        this.description = description;
-        this.htmlText = htmlText;
     }
 
-    public MyResources() {
-        this("", "", "");
+    public void setObject(String key, String value){
+         if (key.equals("title")) {
+            title = value;
+        }
+        if (key.equals("message")) {
+            message = value;
+        }
     }
-
-    public MyResources(String message, String description) {
-        this(message, description, "");
-    }
-
-    public MyResources(String message) {
-        this(message, "", "");
-    }
-
+    
     public Object handleGetObject(String key) {
-        if (key.equals("okKey")) {
-            return "Ok";
+        if (key.equals("title")) {
+            return title;
         }
         if (key.equals("message")) {
             return message;
         }
-        if (key.equals("description")) {
-            return description;
-        }
-        if (key.equals("text")) {
-            return htmlText;
-        }
+        
 
         return null;
     }
@@ -64,6 +54,6 @@ public class MyResources extends ResourceBundle {
     // Overrides handleKeySet() so that the getKeys() implementation
     // can rely on the keySet() value.
     protected Set<String> handleKeySet() {
-        return new HashSet<String>(Arrays.asList("okKey", "message", "description", "text"));
+        return new HashSet<String>(Arrays.asList("title", "message"));
     }
 }

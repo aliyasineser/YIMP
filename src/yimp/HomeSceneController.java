@@ -10,7 +10,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -22,7 +21,7 @@ import vpt.algorithms.io.Load;
  *
  * @author aliyasineser
  */
-public class FXMLDocumentController implements Initializable {
+public class HomeSceneController implements Initializable {
 
     private Stage window;
     private final Desktop desktop = Desktop.getDesktop();
@@ -34,7 +33,6 @@ public class FXMLDocumentController implements Initializable {
     }
 
     public boolean openFile() throws Exception {
-        
         FileChooser fileChooser = new FileChooser();
         configureFileChooserOpen(fileChooser);
         File file = fileChooser.showOpenDialog(window);
@@ -45,8 +43,11 @@ public class FXMLDocumentController implements Initializable {
         
         Image img = Load.invoke(file.getCanonicalPath());
         Display2D.invoke(img);
+        GaussianBundle params = new GaussianBundle();
+        GaussianRequestController.showRequestBox(params);
+        Gaussian.invoke(img, (Integer)params.handleGetObject("kernelSize") , (Double)params.handleGetObject("sigma") );
         
-
+        
         return true;
     }
     
@@ -63,7 +64,6 @@ public class FXMLDocumentController implements Initializable {
         fileChooser.getExtensionFilters().add(jpgFilter);
         fileChooser.getExtensionFilters().add(jpegFilter);
         fileChooser.getExtensionFilters().add(pngFilter);
-
     }
 
     

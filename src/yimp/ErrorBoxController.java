@@ -28,18 +28,20 @@ import javafx.stage.Stage;
  */
 public class ErrorBoxController implements Initializable {
 
-    public GridPane gridWindow;
+    public GridPane gridWindow;  
     public ImageView errImage;
     public Label messageLabel;
     public Label detailsLabel;
     public Button okButton;
+    
 
-    public static void showErrorBox(String windowTitle, String messageTitle, String message){
+    public static void showErrorBox(String windowTitle, String title, String message){
         try{
+            
             Stage errorWindow = new Stage();
             errorWindow.initModality(Modality.APPLICATION_MODAL);
             errorWindow.setTitle(windowTitle);
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/editor/ErrorBox.fxml"), new MyResources(messageTitle, message));
+            Parent errorLayout = FXMLLoader.load(new URL("file:src/editor/ErrorBox.fxml"), new ErrorBundle(title, message));
             Scene scene = new Scene(errorLayout);
             errorWindow.setScene(scene);
             errorWindow.showAndWait();
