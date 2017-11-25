@@ -30,6 +30,7 @@ public class HomeSceneController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
+        
     }
 
     public boolean openFile() throws Exception {
@@ -41,12 +42,17 @@ public class HomeSceneController implements Initializable {
             return false; // path secimi iptal edildi
         }
         
+        
         Image img = Load.invoke(file.getCanonicalPath());
         Display2D.invoke(img);
+        MeanBundle parameters = new MeanBundle();
+        MeanRequestController.showRequestBox(parameters);
+        Mean.invoke(img, (Integer) parameters.handleGetObject("kernelSize"));
+        /*
         GaussianBundle params = new GaussianBundle();
         GaussianRequestController.showRequestBox(params);
         Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
-
+        */
         return true;
     }
 
@@ -55,10 +61,13 @@ public class HomeSceneController implements Initializable {
         fileChooser.setInitialDirectory(
                 new File(System.getProperty("user.home"), "/Desktop"));
 
+        
+        FileChooser.ExtensionFilter allFilter = new FileChooser.ExtensionFilter("All files (*)", "*");
         FileChooser.ExtensionFilter jpgFilter = new FileChooser.ExtensionFilter("JPG files (*.jpg)", "*.jpg");
         FileChooser.ExtensionFilter jpegFilter = new FileChooser.ExtensionFilter("JPEG files (*.jpeg)", "*.jpeg");
         FileChooser.ExtensionFilter pngFilter = new FileChooser.ExtensionFilter("PNG files (*.png)", "*.png");
 
+        fileChooser.getExtensionFilters().add(allFilter);
         fileChooser.getExtensionFilters().add(jpgFilter);
         fileChooser.getExtensionFilters().add(jpegFilter);
         fileChooser.getExtensionFilters().add(pngFilter);

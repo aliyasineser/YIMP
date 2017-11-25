@@ -47,7 +47,7 @@ public class ErrorBoxController implements Initializable {
             errorWindow.showAndWait();
         }
         catch(Exception ex){
-            System.err.println(ex.getMessage());
+            ex.printStackTrace();
         }
     }
     
@@ -56,9 +56,9 @@ public class ErrorBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //errImage.setImage(new Image("file:src/Assets/errorPanda_200x200.png"));
-        messageLabel.setText(rb.getString("message"));
-        detailsLabel.setText(rb.getString("description"));
+        //errImage.setImage(new Image("file:src/Assets/error.png"));
+        messageLabel.setText(rb.getString("title"));
+        detailsLabel.setText(rb.getString("message"));
         //enter'a basildiginda hata mesaji ekrani kapanir
         okButton.setOnKeyPressed((KeyEvent key)->{
             if (key.getCode() == KeyCode.ENTER) {

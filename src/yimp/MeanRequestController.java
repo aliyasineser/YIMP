@@ -71,6 +71,7 @@ public class MeanRequestController implements Initializable {
     
     public void calculate(){
         paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
+        
         closeWindow();
     }
     

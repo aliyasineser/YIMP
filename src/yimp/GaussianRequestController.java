@@ -84,7 +84,7 @@ public class GaussianRequestController implements Initializable {
         System.err.println(Integer.valueOf(kernelSizeField.getText()).intValue());
         int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
         if( kSize % 2 == 0 || kSize < 0)
-            ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a pozitive odd number.");
+            ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number.");
         else{
             paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
             paramBundle.setObject( "sigma", Double.valueOf(sigmaField.getText()) );

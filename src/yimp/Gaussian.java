@@ -54,26 +54,7 @@ public class Gaussian {
         return Kernel;
     }
 
-    /*
-    int W = 5;
-    double kernel[W][W];
-    double mean = W/2;
-    double sum = 0.0; // For accumulating the kernel values
-    for (int x = 0; x < W; ++x) 
-        for (int y = 0; y < W; ++y) {
-            kernel[x][y] = exp( -0.5 * (pow((x-mean)/sigma, 2.0) + pow((y-mean)/sigma,2.0)) )
-                             / (2 * M_PI * sigma * sigma);
-
-            // Accumulate the kernel values
-            sum += kernel[x][y];
-        }
-
-    // Normalize the kernel
-    for (int x = 0; x < W; ++x) 
-        for (int y = 0; y < W; ++y)
-            kernel[x][y] /= sum;
-    */
-
+  
     public static Image invoke(Image source, int length, double sigma) {
         Image result = source.newInstance(true);
         double[][] kernelCoef = Calculate(length, sigma);
@@ -88,7 +69,6 @@ public class Gaussian {
         }
         
     
-        
         for (int y = 0; y < operandImage.getYDim()-kernelCoef.length; y++) {
             for (int x = 0; x < operandImage.getXDim()-kernelCoef.length; x++) {
                 double sum = 0;
@@ -102,10 +82,6 @@ public class Gaussian {
                 sum = 0;
             }
         }	
-        
-        
-        
-        
         
         
         Display2D.invoke(result,"after");
