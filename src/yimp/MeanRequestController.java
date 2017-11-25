@@ -24,20 +24,20 @@ import javafx.stage.Stage;
  *
  * @author aliyasineser
  */
-public class GaussianRequestController implements Initializable {
+public class MeanRequestController implements Initializable {
 
-    public TextField sigmaField;
+    
     public TextField kernelSizeField;
     public Button calculateButton;
-    GaussianBundle paramBundle;
+    MeanBundle paramBundle;
     public AnchorPane pane;
     
-    public static void showRequestBox(GaussianBundle bundle){
+    public static void showRequestBox(MeanBundle bundle){
         try{
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
-            requestWindow.setTitle("Gaussian Parameters");
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/GaussianRequest.fxml"), bundle);
+            requestWindow.setTitle("Mean Parameters");
+            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/MeanRequest.fxml"), bundle);
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
@@ -55,7 +55,7 @@ public class GaussianRequestController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paramBundle = (GaussianBundle)rb;
+        paramBundle = (MeanBundle)rb;
         // force the field to be numeric only
         kernelSizeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -66,30 +66,12 @@ public class GaussianRequestController implements Initializable {
                 }
             }
         });
-        
-        sigmaField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(ObservableValue<? extends String> observable, String oldValue,
-                    String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    sigmaField.setText(newValue.replaceAll("[^\\d]", ""));
-                }
-            }
-        });
-        
     }
     
     
     public void calculate(){
-        System.err.println(Integer.valueOf(kernelSizeField.getText()).intValue());
-        int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
-        if( kSize % 2 == 0 || kSize < 0)
-            ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a pozitive odd number.");
-        else{
-            paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
-            paramBundle.setObject( "sigma", Double.valueOf(sigmaField.getText()) );
-            closeWindow();
-        }
+        paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
+        closeWindow();
     }
     
     
@@ -98,5 +80,4 @@ public class GaussianRequestController implements Initializable {
         ((Stage) (pane.getScene().getWindow())).close();
     }
     
-
 }

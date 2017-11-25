@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="300.0" prefWidth="442.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.MeanRequestController">
+   <children>
+      <TextField fx:id="kernelSizeField" layoutX="163.0" layoutY="90.0" />
+      <Label layoutX="75.0" layoutY="95.0" text="Kernel Size:" />
+      <Button fx:id="calculateButton" layoutX="216.0" layoutY="141.0" mnemonicParsing="false" onAction="#calculate" text="Calculate" />
+   </children>
+</AnchorPane>

@@ -36,18 +36,18 @@ public class ErrorBoxController implements Initializable {
     
 
     public static void showErrorBox(String windowTitle, String title, String message){
+        
         try{
-            
             Stage errorWindow = new Stage();
             errorWindow.initModality(Modality.APPLICATION_MODAL);
             errorWindow.setTitle(windowTitle);
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/editor/ErrorBox.fxml"), new ErrorBundle(title, message));
+            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/ErrorBox.fxml"), new ErrorBundle(title, message));
             Scene scene = new Scene(errorLayout);
             errorWindow.setScene(scene);
             errorWindow.showAndWait();
         }
         catch(Exception ex){
-        
+            System.err.println(ex.getMessage());
         }
     }
     
@@ -56,13 +56,12 @@ public class ErrorBoxController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        errImage.setImage(new Image("file:src/Assets/errorPanda_200x200.png"));
+        //errImage.setImage(new Image("file:src/Assets/errorPanda_200x200.png"));
         messageLabel.setText(rb.getString("message"));
         detailsLabel.setText(rb.getString("description"));
         //enter'a basildiginda hata mesaji ekrani kapanir
         okButton.setOnKeyPressed((KeyEvent key)->{
             if (key.getCode() == KeyCode.ENTER) {
-                //System.err.println("firee");
                 okButton.fire();
             }
         });

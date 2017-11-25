@@ -26,7 +26,7 @@ public class HomeSceneController implements Initializable {
     private Stage window;
     private final Desktop desktop = Desktop.getDesktop();
     public BorderPane borderPane;
-    
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -45,13 +45,11 @@ public class HomeSceneController implements Initializable {
         Display2D.invoke(img);
         GaussianBundle params = new GaussianBundle();
         GaussianRequestController.showRequestBox(params);
-        Gaussian.invoke(img, (Integer)params.handleGetObject("kernelSize") , (Double)params.handleGetObject("sigma") );
-        
-        
+        Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
+
         return true;
     }
-    
-    
+
     private static void configureFileChooserOpen(final FileChooser fileChooser) {
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(
@@ -66,13 +64,11 @@ public class HomeSceneController implements Initializable {
         fileChooser.getExtensionFilters().add(pngFilter);
     }
 
-    
-    
     /**
      * Exiting from Program.
      */
-    public void closeProgram(){
+    public void closeProgram() {
         ((Stage) (borderPane.getScene().getWindow())).close();
     }
-    
+
 }
