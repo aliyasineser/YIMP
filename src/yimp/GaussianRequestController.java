@@ -31,9 +31,9 @@ public class GaussianRequestController implements Initializable {
     public Button calculateButton;
     GaussianBundle paramBundle;
     public AnchorPane pane;
-    
-    public static void showRequestBox(GaussianBundle bundle){
-        try{
+
+    public static void showRequestBox(GaussianBundle bundle) {
+        try {
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
             requestWindow.setTitle("Gaussian Parameters");
@@ -41,21 +41,17 @@ public class GaussianRequestController implements Initializable {
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
-        }
-        catch(Exception ex){
-        
+        } catch (Exception ex) {
+
         }
     }
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paramBundle = (GaussianBundle)rb;
+        paramBundle = (GaussianBundle) rb;
         // force the field to be numeric only
         kernelSizeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -66,7 +62,7 @@ public class GaussianRequestController implements Initializable {
                 }
             }
         });
-        
+
         sigmaField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
@@ -76,27 +72,27 @@ public class GaussianRequestController implements Initializable {
                 }
             }
         });
-        
+
     }
-    
-    
-    public void calculate(){
-        System.err.println(Integer.valueOf(kernelSizeField.getText()).intValue());
-        int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
-        if( kSize % 2 == 0 || kSize < 0)
-            ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number.");
-        else{
-            paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
-            paramBundle.setObject( "sigma", Double.valueOf(sigmaField.getText()) );
-            closeWindow();
+
+    public void calculate() {
+        if (kernelSizeField.getText().equals("") || sigmaField.getText().equals("")) {
+            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
+        } else {
+            int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
+            if (kSize % 2 == 0 || kSize < 0) {
+                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number.");
+            } else {
+                paramBundle.setObject("kernelSize", Integer.valueOf(kernelSizeField.getText()));
+                paramBundle.setObject("sigma", Double.valueOf(sigmaField.getText()));
+                closeWindow();
+            }
         }
     }
-    
-    
+
     public void closeWindow() {
 
         ((Stage) (pane.getScene().getWindow())).close();
     }
-    
 
 }

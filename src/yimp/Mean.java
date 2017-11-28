@@ -29,7 +29,6 @@ public class Mean {
         
         Image result = CrossCorrelation.invoke(source, kernelCoef);
         
-        Display2D.invoke(result, "after");
         return result;
     }
 

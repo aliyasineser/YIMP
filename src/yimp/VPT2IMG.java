@@ -19,9 +19,9 @@ public class VPT2IMG {
     public static UImage invoke(vpt.Image source){
         UImage result = null;
         Date date = new Date();
-        String fullPath = "./YimpTemp" + date.toString();
+        String fullPath = "YimpTemp/" + date.toString() + ".png";
         Save.invoke(source, fullPath);
-        result = new UImage(fullPath);
+        result = new UImage("file:"+ fullPath);
         return result;
     }
     

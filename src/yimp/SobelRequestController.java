@@ -67,9 +67,10 @@ public class SobelRequestController implements Initializable {
         
         if(operatorChoiceBox.getSelectionModel().isEmpty())
             ErrorBoxController.showErrorBox("Error", "Selection Error", "Non of the operators are selected.");
-        
-        paramBundle.setObject( "operatorChoice", operatorChoiceBox.getSelectionModel().getSelectedItem().toString());
-        closeWindow();
+        else{
+            paramBundle.setObject( "operatorChoice", operatorChoiceBox.getSelectionModel().getSelectedItem().toString());
+            closeWindow();
+        }
     }
     
     

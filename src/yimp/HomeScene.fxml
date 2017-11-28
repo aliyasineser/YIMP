@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="borderPane" maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color:white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.HomeSceneController">
+<BorderPane fx:id="borderPane" focusTraversable="true" maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" style="-fx-background-color:white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.HomeSceneController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <menus>
@@ -20,6 +20,13 @@
                     </items>
                 </Menu>
                 <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit" />
+            <Menu mnemonicParsing="false" text="Filters">
+               <items>
+                  <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
+                  <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
+                  <MenuItem mnemonicParsing="false" onAction="#Sobel" text="Sobel" />
+               </items>
+            </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
                     <items>
                         <MenuItem fx:id="aboutItem" mnemonicParsing="false" text="About" />
@@ -31,4 +38,20 @@
    <center>
       <ImageView fx:id="imageView" fitHeight="338.0" fitWidth="374.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
    </center>
+   <left>
+      <TreeView fx:id="tree" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#changeImage" pickOnBounds="false" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                  <Menu mnemonicParsing="false" text="Filters">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
+                        <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
+                        <MenuItem mnemonicParsing="false" onAction="#Sobel" text="Sobel" />
+                    </items>
+                  </Menu>
+              </items>
+            </ContextMenu>
+         </contextMenu></TreeView>
+   </left>
 </BorderPane>

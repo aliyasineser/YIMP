@@ -16,7 +16,7 @@ import vpt.algorithms.io.Load;
 public class IMG2VPT {
 
     public static Image invoke(UImage source) {
-        return Load.invoke(source.getURL());
+        return Load.invoke(source.getURL().substring(source.getURL().indexOf(':')+1) );
     }
 
 }

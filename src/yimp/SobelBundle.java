@@ -21,6 +21,7 @@ public class SobelBundle extends ResourceBundle{
     private String operatorChoice;
 
     public SobelBundle() {
+        this.operatorChoice = "";
     }
 
     public SobelBundle(String operatorChoice) {

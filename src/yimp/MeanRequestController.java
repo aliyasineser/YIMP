@@ -70,9 +70,12 @@ public class MeanRequestController implements Initializable {
     
     
     public void calculate(){
-        paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
-        
-        closeWindow();
+        if (kernelSizeField.getText().equals("")) 
+            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
+        else{
+            paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
+            closeWindow();
+        }
     }
     
     
