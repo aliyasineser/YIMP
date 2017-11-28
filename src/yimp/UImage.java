@@ -5,8 +5,10 @@
  */
 package yimp;
 
+import com.sun.deploy.util.SystemUtils;
 import java.io.InputStream;
 import javafx.scene.image.Image;
+import sun.plugin2.util.SystemUtil;
 
 /**
  *
@@ -19,7 +21,15 @@ public class UImage extends Image {
 
     
     private String getNameBytUrl(){
-        int lastIndex = url.lastIndexOf('/');
+        
+        int lastIndex;
+        
+        if(System.getProperty("os.name").contains("Windows") )
+            lastIndex = url.lastIndexOf("\\");
+        else 
+            lastIndex = url.lastIndexOf('/');
+        
+        
         return url.substring(lastIndex+1);
     }
     
@@ -27,9 +37,6 @@ public class UImage extends Image {
         return url;
     }
 
-    public UImage() {
-        super("file:src/Assets/root");
-    }
     
     public UImage(String url) {
         super(url);

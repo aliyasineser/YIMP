@@ -33,11 +33,18 @@ public class HomeSceneController implements Initializable {
     public BorderPane borderPane;
     public ImageView imageView;
     public TreeView<UImage> tree;
-    public TreeItem<UImage> root = new TreeItem<>(new UImage());
+    public UImage rootImg;
+    public TreeItem<UImage> root;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        
+        if(System.getProperty("os.name").contains("Windows") )
+            rootImg = new UImage("file:src\\Assets\\root");
+        else 
+            rootImg = new UImage("file:src/Assets/root");
+        
+        root = new TreeItem<>(rootImg);
         tree.setRoot(root);
 
     }
