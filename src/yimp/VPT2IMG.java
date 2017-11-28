@@ -20,6 +20,7 @@ public class VPT2IMG {
         UImage result = null;
         Date date = new Date();
         String fullPath = "YimpTemp/" + date.toString() + ".png";
+        
         Save.invoke(source, fullPath);
         result = new UImage("file:"+ fullPath);
         return result;
