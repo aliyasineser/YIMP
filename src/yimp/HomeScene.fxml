@@ -28,4 +28,7 @@
             </menus>
         </MenuBar>
     </top>
+   <center>
+      <ImageView fx:id="imageView" fitHeight="338.0" fitWidth="374.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+   </center>
 </BorderPane>

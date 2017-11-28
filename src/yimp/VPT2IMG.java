@@ -5,8 +5,10 @@
  */
 package yimp;
 
+import java.util.Date;
 import javafx.scene.image.Image;
 import vpt.algorithms.io.Save;
+
 
 /**
  *
@@ -14,6 +16,13 @@ import vpt.algorithms.io.Save;
  */
 public class VPT2IMG {
  
-    
+    public static UImage invoke(vpt.Image source){
+        UImage result = null;
+        Date date = new Date();
+        String fullPath = "./YimpTemp" + date.toString();
+        Save.invoke(source, fullPath);
+        result = new UImage(fullPath);
+        return result;
+    }
     
 }

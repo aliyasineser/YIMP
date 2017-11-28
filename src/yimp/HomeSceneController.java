@@ -10,6 +10,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -26,6 +27,7 @@ public class HomeSceneController implements Initializable {
     private Stage window;
     private final Desktop desktop = Desktop.getDesktop();
     public BorderPane borderPane;
+    public ImageView imageView;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -43,16 +45,25 @@ public class HomeSceneController implements Initializable {
         }
         
         
-        Image img = Load.invoke(file.getCanonicalPath());
-        Display2D.invoke(img);
-        MeanBundle parameters = new MeanBundle();
+        imageView.setImage(new UImage("file:"+file.getCanonicalPath()));
+        //Display2D.invoke(img);
+        /*MeanBundle parameters = new MeanBundle();
         MeanRequestController.showRequestBox(parameters);
         Mean.invoke(img, (Integer) parameters.handleGetObject("kernelSize"));
+        */
+        
         /*
         GaussianBundle params = new GaussianBundle();
         GaussianRequestController.showRequestBox(params);
         Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
         */
+        /*
+        SobelBundle operators = new SobelBundle();
+        SobelRequestController.showRequestBox(operators);
+        Sobel.invoke(img, operators.handleGetObject("operatorChoice").toString());
+        */
+        
+        
         return true;
     }
 
