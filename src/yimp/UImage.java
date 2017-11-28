@@ -19,8 +19,11 @@ public class UImage extends Image {
     private String url;
     private String name;
 
+    public String getFileName() {
+        return name;
+    }
     
-    private String getNameBytUrl(){
+    private String getNameByUrl(){
         
         int lastIndex;
         
@@ -29,8 +32,10 @@ public class UImage extends Image {
         else 
             lastIndex = url.lastIndexOf('/');
         
+        String withExt = url.substring(lastIndex+1);
         
-        return url.substring(lastIndex+1);
+        lastIndex = withExt.lastIndexOf('.');
+        return withExt.substring(0, lastIndex);
     }
     
     public String getURL() {
@@ -41,25 +46,25 @@ public class UImage extends Image {
     public UImage(String url) {
         super(url);
         this.url = url;
-        this.name = getNameBytUrl();
+        this.name = getNameByUrl();
     }
 
     public UImage(String url, boolean backgroundLoading) {
         super(url, backgroundLoading);
         this.url = url;
-        this.name = getNameBytUrl();
+        this.name = getNameByUrl();
     }
 
     public UImage(String url, double requestedWidth, double requestedHeight, boolean preserveRatio, boolean smooth) {
         super(url, requestedWidth, requestedHeight, preserveRatio, smooth);
         this.url = url;
-        this.name = getNameBytUrl();
+        this.name = getNameByUrl();
     }
 
     public UImage(String url, double requestedWidth, double requestedHeight, boolean preserveRatio, boolean smooth, boolean backgroundLoading) {
         super(url, requestedWidth, requestedHeight, preserveRatio, smooth, backgroundLoading);
         this.url = url;
-        this.name = getNameBytUrl();
+        this.name = getNameByUrl();
     }
 
     public UImage(InputStream is) {

@@ -23,7 +23,9 @@ public class YIMP extends Application {
         Parent root = FXMLLoader.load(getClass().getResource("HomeScene.fxml"));
         
         Scene scene = new Scene(root);
-        
+        stage.setOnCloseRequest((event) -> {
+            removeTempDir();
+        });
         stage.setScene(scene);
         stage.show();
     }
@@ -38,5 +40,15 @@ public class YIMP extends Application {
         
         
     }
+    
+    public static void removeTempDir(){
+        File dir = new File("./YimpTemp");
+        File[] contents =  dir.listFiles();
+        for (File content : contents) {
+            content.delete();
+        }
+        dir.delete();
+    }
+    
     
 }

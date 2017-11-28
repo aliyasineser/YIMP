@@ -8,7 +8,9 @@ package yimp;
 import java.awt.Desktop;
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.fxml.Initializable;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
@@ -35,17 +37,21 @@ public class HomeSceneController implements Initializable {
     public TreeView<UImage> tree;
     public UImage rootImg;
     public TreeItem<UImage> root;
+    HashMap<Image, String> nameMap;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         
         if(System.getProperty("os.name").contains("Windows") )
-            rootImg = new UImage("file:src\\Assets\\root");
+            rootImg = new UImage("file:src\\Assets\\root.png");
         else 
-            rootImg = new UImage("file:src/Assets/root");
+            rootImg = new UImage("file:src/Assets/root.png");
         
         root = new TreeItem<>(rootImg);
         tree.setRoot(root);
+        nameMap = new HashMap<>();
+        
+       
 
     }
 
@@ -61,22 +67,9 @@ public class HomeSceneController implements Initializable {
         UImage chosenImage = new UImage("file:" + file.getCanonicalPath());
         imageView.setImage(chosenImage);
         root.getChildren().add(new TreeItem<>(chosenImage));
-
-        //Display2D.invoke(img);
-        /*MeanBundle parameters = new MeanBundle();
-        MeanRequestController.showRequestBox(parameters);
-        Mean.invoke(img, (Integer) parameters.handleGetObject("kernelSize"));
-         */
- /*
-        GaussianBundle params = new GaussianBundle();
-        GaussianRequestController.showRequestBox(params);
-        Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
-         */
- /*
-        SobelBundle operators = new SobelBundle();
-        SobelRequestController.showRequestBox(operators);
-        Sobel.invoke(img, operators.handleGetObject("operatorChoice").toString());
-         */
+        
+        
+        
         return true;
     }
 
@@ -84,9 +77,12 @@ public class HomeSceneController implements Initializable {
         Image result;
         GaussianBundle params = new GaussianBundle();
         GaussianRequestController.showRequestBox(params);
+        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
+        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName() );
         if (!params.handleGetObject("kernelSize").equals("") && !params.handleGetObject("sigma").equals("")) {
-            result = Gaussian.invoke(IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue()), (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result)));
+            result = Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
+            nameMap.put(result, nameMap.get(img) + "_G" + (Integer) params.handleGetObject("kernelSize") + "_" + (Double) params.handleGetObject("sigma") );
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
         }
 
     }
@@ -95,9 +91,12 @@ public class HomeSceneController implements Initializable {
         Image result;
         MeanBundle parameters = new MeanBundle();
         MeanRequestController.showRequestBox(parameters);
+        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
+        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!parameters.handleGetObject("kernelSize").equals("")) {
-            result = Mean.invoke(IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue()), (Integer) parameters.handleGetObject("kernelSize"));
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result)));
+            result = Mean.invoke(img, (Integer) parameters.handleGetObject("kernelSize"));
+            nameMap.put(result, nameMap.get(img) + "_M" + (Integer) parameters.handleGetObject("kernelSize") );
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
         }
     }
 
@@ -105,9 +104,12 @@ public class HomeSceneController implements Initializable {
         Image result;
         SobelBundle operators = new SobelBundle();
         SobelRequestController.showRequestBox(operators);
+        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
+        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("operatorChoice").equals("")) {
-            result = Sobel.invoke(IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue()), operators.handleGetObject("operatorChoice").toString());
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result)));
+            result = Sobel.invoke(img, operators.handleGetObject("operatorChoice").toString());
+            nameMap.put(result, nameMap.get(img) + "_S" + operators.handleGetObject("operatorChoice") );
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
         }
 
     }
@@ -136,7 +138,11 @@ public class HomeSceneController implements Initializable {
      * Exiting from Program.
      */
     public void closeProgram() {
-        ((Stage) (borderPane.getScene().getWindow())).close();
+        YIMP.removeTempDir();
+        Platform.exit();
     }
 
+    
+    
+    
 }

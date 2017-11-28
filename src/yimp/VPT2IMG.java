@@ -9,26 +9,28 @@ import java.util.Date;
 import javafx.scene.image.Image;
 import vpt.algorithms.io.Save;
 
-
 /**
  *
  * @author aliyasineser
  */
 public class VPT2IMG {
- 
-    public static UImage invoke(vpt.Image source){
+
+    public static UImage invoke(vpt.Image source, String name) {
         UImage result = null;
         Date date = new Date();
         String fullPath;
-        
-        if(System.getProperty("os.name").contains("Windows") )
-            fullPath = "YimpTemp\\" + date.toString() + ".png";
-        else 
-            fullPath = "YimpTemp/" + date.toString() + ".png";
+
+        if (System.getProperty("os.name").contains("Windows")) {
+            fullPath = System.getProperty("user.dir") + "\\YimpTemp\\" + name + ".png";
+        } else {
+            fullPath = "./YimpTemp/" + date.toString() + ".png";
+        }
+
+        System.out.println(fullPath);
         
         Save.invoke(source, fullPath);
-        result = new UImage("file:"+ fullPath);
+        result = new UImage("file:" + fullPath);
         return result;
     }
-    
+
 }
