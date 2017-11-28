@@ -23,7 +23,7 @@ public class VPT2IMG {
         if (System.getProperty("os.name").contains("Windows")) {
             fullPath = System.getProperty("user.dir") + "\\YimpTemp\\" + name + ".png";
         } else {
-            fullPath = "./YimpTemp/" + date.toString() + ".png";
+            fullPath = System.getProperty("user.dir") + "/YimpTemp/" + name + ".png";
         }
 
         System.out.println(fullPath);
