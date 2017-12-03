@@ -1,6 +1,5 @@
 package yimp;
 
-
 import vpt.ByteImage;
 import vpt.Image;
 import vpt.algorithms.display.Display2D;
@@ -25,17 +24,12 @@ public class Gaussian {
 
         int kernelRadius = length / 2;
         double distance = 0;
-
-        double calculatedEuler = 1.0
-                / (2.0 * Math.PI * Math.pow(weight, 2));
+        double calculatedEuler = 1.0 / (2.0 * Math.PI * Math.pow(weight, 2));
 
         for (int filterY = -kernelRadius;
                 filterY <= kernelRadius; filterY++) {
-            for (int filterX = -kernelRadius;
-                    filterX <= kernelRadius; filterX++) {
-                distance = ((filterX * filterX)
-                        + (filterY * filterY))
-                        / (2 * (weight * weight));
+            for (int filterX = -kernelRadius; filterX <= kernelRadius; filterX++) {
+                distance = ((filterX * filterX) + (filterY * filterY)) / (2 * (weight * weight));
 
                 Kernel[filterY + kernelRadius][filterX + kernelRadius]
                         = calculatedEuler * Math.exp(-distance);
@@ -54,13 +48,12 @@ public class Gaussian {
         return Kernel;
     }
 
-  
     public static Image invoke(Image source, int length, double sigma) {
-        
+
         double[][] kernelCoef = Calculate(length, sigma);
-        
+
         Image result = CrossCorrelation.invoke(source, kernelCoef);
-        
+
         return result;
     }
 

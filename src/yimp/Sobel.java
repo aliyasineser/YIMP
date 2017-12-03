@@ -24,26 +24,33 @@ public class Sobel {
     public static Image invoke(Image source, String operator){
         
         Image result = source.newInstance(false);
-        double[][] kernelhorizontal= {{-1,0,1},{-2,0,2},{-1,0,1}}; // horizontal filter
-        double[][] kernelvertical = {{1,2,1},{0,0,0},{-1,-2,-1}}; // vertical filter
+        double[][] kernelRight= {{-1,0,1},{-2,0,2},{-1,0,1}}; // right filter
+        double[][] kernelLeft= {{1,0,-1},{2,0,-2},{1,0,-1}}; // left filter
+        double[][] kernelTop = {{1,2,1},{0,0,0},{-1,-2,-1}}; // top filter
+        double[][] kernelBottom = {{-1,-2,-1},{0,0,0},{1,2,1}}; // bottom filter
         switch(operator){
-            case("Vertical"):
-                result =  CrossCorrelation.invoke(source, kernelvertical);
+            case("Top Sobel(Vertical)"):
+                result =  CrossCorrelation.invoke(source, kernelTop);
                 break;
-            case("Horizontal"):
-                result =  CrossCorrelation.invoke(source, kernelhorizontal);
+            case("Right Sobel(Horizontal)"):
+                result =  CrossCorrelation.invoke(source, kernelRight);
+                break;
+            case("Bottom Sobel"):
+                result =  CrossCorrelation.invoke(source, kernelBottom);
+                break;
+            case("Left Sobel"):
+                result =  CrossCorrelation.invoke(source, kernelLeft);
                 break;
             case("Gradient Magnitude"):
                 // Magntude can be compute with different formula
                 // This formula is computationally fast.
-                Image vertical = CrossCorrelation.invoke(source, kernelvertical);
-                Image horizontal = CrossCorrelation.invoke(source, kernelhorizontal);
+                Image vertical = CrossCorrelation.invoke(source, kernelTop);
+                Image horizontal = CrossCorrelation.invoke(source, kernelRight);
                 try {
                     result = Addition.invoke(vertical, horizontal);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-                
                 break;
             default:
                 break;

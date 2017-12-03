@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
@@ -19,8 +20,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import vpt.ByteImage;
+import vpt.DoubleImage;
 import vpt.Image;
 import vpt.algorithms.display.Display2D;
+import vpt.algorithms.frequential.FFT;
 import vpt.algorithms.io.Load;
 import vpt.algorithms.io.Save;
 
@@ -36,23 +39,24 @@ public class HomeSceneController implements Initializable {
     public ImageView imageView;
     public TreeView<UImage> tree;
     public UImage rootImg;
+    public ScrollPane scroll;
     public TreeItem<UImage> root;
     HashMap<Image, String> nameMap;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        
-        if(System.getProperty("os.name").contains("Windows") )
+
+        if (System.getProperty("os.name").contains("Windows")) {
             rootImg = new UImage("file:src\\Assets\\root.png");
-        else 
+        } else {
             rootImg = new UImage("file:src/Assets/root.png");
-        
+        }
+
         root = new TreeItem<>(rootImg);
         tree.setRoot(root);
         nameMap = new HashMap<>();
-        
-       
 
+        //tree.setPrefSize(scroll.getWidth(), scroll.getHeight());
     }
 
     public boolean openFile() throws Exception {
@@ -67,9 +71,20 @@ public class HomeSceneController implements Initializable {
         UImage chosenImage = new UImage("file:" + file.getCanonicalPath());
         imageView.setImage(chosenImage);
         root.getChildren().add(new TreeItem<>(chosenImage));
+
+        //Display2D.invoke(IMG2VPT.invoke(chosenImage), "hehehehehheh before");
+        //Dilation.invoke(IMG2VPT.invoke(chosenImage), 51, "Square")
+        //OpeningByReconstruction.invoke( IMG2VPT.invoke(chosenImage), 3, "Square");
+        /*
+        //sFastFourierTransform.test1D();
+        Image vptimg = IMG2VPT.invoke(chosenImage);
+        ComplexNumber[][] imgs = FastFourierTransform.imageFFT(vptimg);
+        Display2D.invoke(FastFourierTransform.magnitude(imgs, vptimg.getXDim(), vptimg.getYDim()),"fft");
         
         
-        
+        ComplexNumber[][] imgsi = FastFourierTransform.imageIFFT(imgs);
+        Display2D.invoke(FastFourierTransform.magnitude(imgsi, vptimg.getXDim(), vptimg.getYDim()),"ifft");
+         */
         return true;
     }
 
@@ -78,11 +93,11 @@ public class HomeSceneController implements Initializable {
         GaussianBundle params = new GaussianBundle();
         GaussianRequestController.showRequestBox(params);
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
-        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName() );
+        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!params.handleGetObject("kernelSize").equals("") && !params.handleGetObject("sigma").equals("")) {
             result = Gaussian.invoke(img, (Integer) params.handleGetObject("kernelSize"), (Double) params.handleGetObject("sigma"));
-            nameMap.put(result, nameMap.get(img) + "_G" + (Integer) params.handleGetObject("kernelSize") + "_" + (Double) params.handleGetObject("sigma") );
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
+            nameMap.put(result, nameMap.get(img) + "_G" + (Integer) params.handleGetObject("kernelSize") + "_" + (Double) params.handleGetObject("sigma"));
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
         }
 
     }
@@ -95,8 +110,8 @@ public class HomeSceneController implements Initializable {
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!parameters.handleGetObject("kernelSize").equals("")) {
             result = Mean.invoke(img, (Integer) parameters.handleGetObject("kernelSize"));
-            nameMap.put(result, nameMap.get(img) + "_M" + (Integer) parameters.handleGetObject("kernelSize") );
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
+            nameMap.put(result, nameMap.get(img) + "_M" + (Integer) parameters.handleGetObject("kernelSize"));
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
         }
     }
 
@@ -108,14 +123,16 @@ public class HomeSceneController implements Initializable {
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("operatorChoice").equals("")) {
             result = Sobel.invoke(img, operators.handleGetObject("operatorChoice").toString());
-            nameMap.put(result, nameMap.get(img) + "_S" + operators.handleGetObject("operatorChoice") );
-            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result,nameMap.get(result))));
+            nameMap.put(result, nameMap.get(img) + "_S" + operators.handleGetObject("operatorChoice"));
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
         }
 
     }
 
     public void changeImage() {
-        imageView.setImage(tree.getSelectionModel().getSelectedItem().getValue());
+        if (!tree.getSelectionModel().isEmpty()) {
+            imageView.setImage(tree.getSelectionModel().getSelectedItem().getValue());
+        }
     }
 
     private static void configureFileChooserOpen(final FileChooser fileChooser) {
@@ -134,6 +151,19 @@ public class HomeSceneController implements Initializable {
         fileChooser.getExtensionFilters().add(pngFilter);
     }
 
+    public void Erosion() {
+        Image result;
+        ErosionBundle operators = new ErosionBundle();
+        ErosionRequestController.showRequestBox(operators);
+        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
+        nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
+        if (!operators.handleGetObject("SE").equals("")) {
+            result = Erosion.invoke(img, (int)operators.handleGetObject("kernelSize"), (String)operators.handleGetObject("SE") );
+            nameMap.put(result, nameMap.get(img) + "_S" + operators.handleGetObject("operatorChoice"));
+            tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
+        }
+    }
+
     /**
      * Exiting from Program.
      */
@@ -142,7 +172,4 @@ public class HomeSceneController implements Initializable {
         Platform.exit();
     }
 
-    
-    
-    
 }

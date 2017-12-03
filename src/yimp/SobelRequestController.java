@@ -58,8 +58,10 @@ public class SobelRequestController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         paramBundle = (SobelBundle)rb;
         operatorChoiceBox.getItems().add("Gradient Magnitude");
-        operatorChoiceBox.getItems().add("Vertical");
-        operatorChoiceBox.getItems().add("Horizontal");
+        operatorChoiceBox.getItems().add("Top Sobel(Vertical)");
+        operatorChoiceBox.getItems().add("Bottom Sobel");
+        operatorChoiceBox.getItems().add("Right Sobel(Horizontal)");
+        operatorChoiceBox.getItems().add("Left Sobel");
     }
     
     

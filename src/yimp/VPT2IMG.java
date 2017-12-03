@@ -5,19 +5,17 @@
  */
 package yimp;
 
-import java.util.Date;
-import javafx.scene.image.Image;
 import vpt.algorithms.io.Save;
+
 
 /**
  *
  * @author aliyasineser
  */
 public class VPT2IMG {
-
+    
     public static UImage invoke(vpt.Image source, String name) {
         UImage result = null;
-        Date date = new Date();
         String fullPath;
 
         if (System.getProperty("os.name").contains("Windows")) {
