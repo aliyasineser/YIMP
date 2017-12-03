@@ -12,23 +12,27 @@ import vpt.Image;
  * @author aliyasineser
  */
 public class Equal {
-    
-    public static boolean invoke(Image source, Image dest){
-        
-        if(source.getXDim() != dest.getXDim() || source.getYDim() != dest.getYDim())
+
+    public static boolean invoke(Image source, Image dest) {
+
+        if (source.getXDim() != dest.getXDim() || source.getYDim() != dest.getYDim() || source.getCDim() != dest.getCDim()) {
             return false;
-    
+        }
+
         int xdim = source.getXDim();
         int ydim = source.getYDim();
         for (int i = 0; i < xdim; i++) {
             for (int j = 0; j < ydim; j++) {
-                if(source.getXYByte(i, j) != dest.getXYByte(i, j))
-                    return false;
+                for (int k = 0; k < source.getCDim(); k++) {
+                    if (source.getXYCByte(i, j,k) != dest.getXYCByte(i, j,k)) {
+                        return false;
+                    }
+                }
+
             }
         }
-        
-        
+
         return true;
     }
-    
+
 }

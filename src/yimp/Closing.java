@@ -20,7 +20,7 @@ public class Closing {
         Image dilated = Dilation.invoke(source, kernelSize, SE);
         result = Erosion.invoke(dilated, kernelSize, SE);
         
-        Display2D.invoke(result,"after");
+        //Display2D.invoke(result,"after");
         
         return result;
     }

@@ -24,69 +24,65 @@ import javafx.stage.Stage;
  *
  * @author aliyasineser
  */
-public class MeanRequestController implements Initializable {
+public class DoubleRequestController implements Initializable {
 
-    
-    public TextField kernelSizeField;
+    public TextField sigmaField;
     public Button calculateButton;
-    MeanBundle paramBundle;
+    DoubleBundle paramBundle;
     public AnchorPane pane;
-    
-    public static void showRequestBox(MeanBundle bundle, String title){
-        try{
+
+    public static void showRequestBox(DoubleBundle bundle) {
+        try {
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
-            requestWindow.setTitle(title);
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/MeanRequest.fxml"), bundle);
+            requestWindow.setTitle("Parameters");
+            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/DoubleRequest.fxml"), bundle);
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
-        }
-        catch(Exception ex){
-        
+        } catch (Exception ex) {
+
         }
     }
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paramBundle = (MeanBundle)rb;
-        // force the field to be numeric only
-        kernelSizeField.textProperty().addListener(new ChangeListener<String>() {
+        paramBundle = (DoubleBundle) rb;
+      
+
+        sigmaField.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observable, String oldValue,
                     String newValue) {
-                if (!newValue.matches("\\d*")) {
-                    kernelSizeField.setText(newValue.replaceAll("[^\\d]", ""));
+                if (!newValue.matches("\\[0-9]*.\\[0-9]*")) {
+                    sigmaField.setText(newValue.replaceAll("[^\\d\\.]", ""));
                 }
             }
         });
+
     }
-    
-    
-    public void calculate(){
-        if (kernelSizeField.getText().equals("")) 
+
+    public void calculate() {
+        if (sigmaField.getText().equals("")) {
             ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
-        else{
-            int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
-            if (kSize % 2 == 0 || kSize <= 1) {
-                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number except one.");
-            }else{
-                paramBundle.setObject( "kernelSize", Integer.valueOf(kernelSizeField.getText()) );
+        } else {
+            double kSize = Double.valueOf(sigmaField.getText());
+            if (kSize < 0) {
+                ErrorBoxController.showErrorBox("Error", "Value Error", "Double value must be positive.");
+            } else {
+                paramBundle.setObject("value", kSize);
                 closeWindow();
             }
         }
     }
-    
-    
+
     public void closeWindow() {
 
         ((Stage) (pane.getScene().getWindow())).close();
     }
+  
     
 }

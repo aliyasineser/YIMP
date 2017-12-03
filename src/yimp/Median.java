@@ -21,31 +21,36 @@ public class Median {
 
         int[] list = new int[kernelSize * kernelSize];
         Image result = source.newInstance(false);
-        Image operandImage = new ByteImage(result.getXDim() + kernelSize - 1, result.getYDim() + kernelSize - 1);
+        Image operandImage = new ByteImage(result.getXDim() + kernelSize - 1, result.getYDim() + kernelSize - 1, result.getCDim());
 
         operandImage.fill(true);
         for (int i = 0; i < result.getXDim(); i++) {
             for (int j = 0; j < result.getYDim(); j++) {
-                operandImage.setXYByte(i + (kernelSize - 1) / 2, j + (kernelSize - 1) / 2, source.getXYByte(i, j));
+                for (int k = 0; k < result.getCDim(); k++) {
+                    operandImage.setXYCByte(i + (kernelSize - 1) / 2, j + (kernelSize - 1) / 2,k, source.getXYCByte(i, j,k));
+                }
+
             }
         }
         int xdim = operandImage.getXDim();
         int ydim = operandImage.getYDim();
         for (int x = 0; x < xdim - kernelSize; x++) {
             for (int y = 0; y < ydim - kernelSize; y++) {
-
-                for (int xMask = 0; xMask < kernelSize; xMask++) {
-                    for (int yMask = 0; yMask < kernelSize; yMask++) {
-                        list[xMask * kernelSize + yMask] = operandImage.getXYByte(x + xMask, y + yMask);
+                for (int i = 0; i < operandImage.getCDim(); i++) {
+                    for (int xMask = 0; xMask < kernelSize; xMask++) {
+                        for (int yMask = 0; yMask < kernelSize; yMask++) {
+                            list[xMask * kernelSize + yMask] = operandImage.getXYCByte(x + xMask, y + yMask,i);
+                        }
                     }
-                }
-                bubbleSort(list);
+                    bubbleSort(list);
 
-                result.setXYByte(x, y, list[(kernelSize * kernelSize - 1) / 2]);
+                    result.setXYCByte(x, y, i,list[(kernelSize * kernelSize - 1) / 2]);
+
+                }
 
             }
         }
-        Display2D.invoke(result, "after");
+        //Display2D.invoke(result, "after");
         return result;
     }
 

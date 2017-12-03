@@ -16,17 +16,17 @@ import java.util.Set;
  *
  * @author aliyasineser
  */
-public class ErosionBundle extends ResourceBundle {
+public class KernelSeBundle extends ResourceBundle {
 
     private Integer kernelSize;
     private String SE;
 
-    public ErosionBundle(int kernelSize, String SE) {
+    public KernelSeBundle(int kernelSize, String SE) {
         this.kernelSize = kernelSize;
         this.SE = SE;
     }
 
-    public ErosionBundle() {
+    public KernelSeBundle() {
         this.kernelSize = 0;
         this.SE = "";
     }

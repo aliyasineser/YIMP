@@ -30,20 +30,20 @@ import javafx.stage.Stage;
  *
  * @author aliyasineser
  */
-public class ErosionRequestController implements Initializable {
+public class KernelSeRequestController implements Initializable {
 
     public ChoiceBox sElement;
     public TextField kernelSizeField;
     public Button calculateButton;
-    ErosionBundle paramBundle;
+    KernelSeBundle paramBundle;
     public AnchorPane pane;
 
-    public static void showRequestBox(ErosionBundle bundle) {
+    public static void showRequestBox(KernelSeBundle bundle, String title) {
         try {
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
-            requestWindow.setTitle("Gaussian Parameters");
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/ErosionRequest.fxml"), bundle);
+            requestWindow.setTitle(title);
+            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/KernelSeRequest.fxml"), bundle);
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
@@ -57,7 +57,7 @@ public class ErosionRequestController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        paramBundle = (ErosionBundle) rb;
+        paramBundle = (KernelSeBundle) rb;
         // force the field to be numeric only
         kernelSizeField.textProperty().addListener(new ChangeListener<String>() {
             @Override
@@ -80,8 +80,8 @@ public class ErosionRequestController implements Initializable {
             ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
         } else {
             int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
-            if (kSize % 2 == 0 || kSize < 0) {
-                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number.");
+            if (kSize % 2 == 0 || kSize <= 1) {
+                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number except one.");
             } else {
                 paramBundle.setObject("kernelSize", kernelSizeField.getText());
                 paramBundle.setObject("SE", sElement.getSelectionModel().getSelectedItem().toString() );

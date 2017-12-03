@@ -20,7 +20,7 @@ public class Unsharp {
         Image result = Gaussian.invoke(source, length, sigma);
         result = Substraction.invoke(source, result);
         result = Addition.invoke(source, result);
-        Display2D.invoke(result,"after");
+        //Display2D.invoke(result,"after");
         return result;
     }
     

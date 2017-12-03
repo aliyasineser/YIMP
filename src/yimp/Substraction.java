@@ -12,24 +12,30 @@ import vpt.Image;
  * @author aliyasineser
  */
 public class Substraction {
-    
-     public static Image invoke(Image source, Image dest) {
-         Image result = source.newInstance(false);
-         
-         // Can be exception also, todo.
-         if(source.getXDim() != dest.getXDim() || source.getYDim() != dest.getYDim())
-             return null;
-         
-         for (int i = 0; i < source.getXDim(); i++) {
-             for (int j = 0; j < source.getYDim(); j++) {
-                 int temp = source.getXYByte(i, j) - dest.getXYByte(i, j);
-                 if(temp < 0 )temp=0;
-                 result.setXYByte(i, j, temp );
-             }
-         }
-         
-         return result;
-      }
-    
-    
+
+    public static Image invoke(Image source, Image dest) {
+        Image result = source.newInstance(false);
+
+        // Can be exception also, todo.
+        if (source.getXDim() != dest.getXDim() || source.getYDim() != dest.getYDim() || source.getCDim() != dest.getCDim()) {
+            return null;
+        }
+
+        for (int i = 0; i < source.getXDim(); i++) {
+            for (int j = 0; j < source.getYDim(); j++) {
+
+                for (int k = 0; k < source.getCDim(); k++) {
+
+                    int temp = source.getXYCByte(i, j,k) - dest.getXYCByte(i, j,k);
+                    if (temp < 0) {
+                        temp = 0;
+                    }
+                    result.setXYCByte(i, j,k, temp);
+                }
+            }
+        }
+
+        return result;
+    }
+
 }

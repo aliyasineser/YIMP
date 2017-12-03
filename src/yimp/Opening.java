@@ -20,7 +20,7 @@ public class Opening {
         Image eroded = Erosion.invoke(source, kernelSize, SE);
         result = Dilation.invoke(eroded, kernelSize, SE);
         
-        Display2D.invoke(result,"after");
+        //Display2D.invoke(result,"after");
         
         return result;
     }

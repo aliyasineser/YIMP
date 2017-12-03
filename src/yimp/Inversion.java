@@ -19,8 +19,10 @@ public class Inversion {
          int ydim = source.getYDim();
          for (int i = 0; i < xdim; i++) {
              for (int j = 0; j < ydim; j++) {
+                 for (int k = 0; k < source.getCDim(); k++) {
+                     result.setXYCByte(i, j, k,255 - source.getXYCByte(i, j,k) );
+                 }
                  
-                 result.setXYByte(i, j, 255 - source.getXYByte(i, j) );
              }
          }
          

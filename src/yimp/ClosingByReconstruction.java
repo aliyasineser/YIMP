@@ -20,7 +20,7 @@ public class ClosingByReconstruction {
         Image dilated = Dilation.invoke(source, kernelSize, SE);
         result = ReconstructionByErosion.invoke(dilated, source, kernelSize, SE);
         
-        Display2D.invoke(result,"after");
+        //Display2D.invoke(result,"after");
         
         return result;
     }

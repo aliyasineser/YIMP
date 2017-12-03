@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" fx:id="pane" prefHeight="196.0" prefWidth="382.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.DoubleRequestController">
+   <children>
+      <TextField fx:id="sigmaField" layoutX="154.0" layoutY="78.0" />
+      <Label layoutX="58.0" layoutY="83.0" text="Power value:" />
+      <Button fx:id="calculateButton" layoutX="200.0" layoutY="127.0" mnemonicParsing="false" onAction="#calculate" text="Calculate" />
+   </children>
+</AnchorPane>

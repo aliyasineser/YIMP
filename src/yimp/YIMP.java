@@ -22,6 +22,9 @@ public class YIMP extends Application {
     public void start(Stage stage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("HomeScene.fxml"));
         
+        
+        stage.setMinHeight(600);
+        stage.setMinWidth(800);
         Scene scene = new Scene(root);
         stage.setOnCloseRequest((event) -> {
             removeTempDir();

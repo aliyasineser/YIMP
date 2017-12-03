@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane fx:id="borderPane" focusTraversable="true" maxHeight="600.0" maxWidth="800.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color:white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.HomeSceneController">
+<BorderPane fx:id="borderPane" focusTraversable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" prefHeight="586.0" prefWidth="813.0" style="-fx-background-color:white" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="yimp.HomeSceneController">
     <top>
         <MenuBar fx:id="menuBar" BorderPane.alignment="CENTER">
             <menus>
@@ -22,11 +22,45 @@
                 <Menu fx:id="editMenu" mnemonicParsing="false" text="Edit" />
             <Menu mnemonicParsing="false" text="Filters">
                <items>
-                  <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
-                  <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
-                  <MenuItem mnemonicParsing="false" onAction="#Sobel" text="Sobel" />
-                  <SeparatorMenuItem mnemonicParsing="false" />
-                  <MenuItem mnemonicParsing="false" onAction="#Erosion" text="Erosion" />
+                  <Menu mnemonicParsing="false" text="Edge">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#Laplacian" text="Laplacian" />
+                        <MenuItem mnemonicParsing="false" onAction="#Sobel" text="Sobel" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Smoothing">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
+                        <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
+                        <MenuItem mnemonicParsing="false" onAction="#Median" text="Median" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Morphological">
+                    <items>
+                        <MenuItem mnemonicParsing="false" onAction="#Erosion" text="Erosion" />
+                        <MenuItem mnemonicParsing="false" onAction="#ReconstructionByErosion" text="Reconstruction By Erosion" />
+                        <MenuItem mnemonicParsing="false" onAction="#GeodesicErosion" text="Geodesic Erosion" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#Dilation" text="Dilation" />
+                        <MenuItem mnemonicParsing="false" onAction="#ReconstructionByDilation" text="Reconstruction By Dilation" />
+                        <MenuItem mnemonicParsing="false" onAction="#GeodesicDilation" text="Geodesic Dilation" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#Opening" text="Opening" />
+                        <MenuItem mnemonicParsing="false" onAction="#OpeningByReconstruction" text="Opening By Reconstruction" />
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <MenuItem mnemonicParsing="false" onAction="#Closing" text="Closing" />
+                        <MenuItem mnemonicParsing="false" onAction="#ClosingByReconstruction" text="Closing By Reconstruction" />
+                    </items>
+                  </Menu>
+                  <Menu mnemonicParsing="false" text="Arithmetic">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#Addition" text="Addition" />
+                        <MenuItem mnemonicParsing="false" onAction="#Substraction" text="Substraction" />
+                        <MenuItem mnemonicParsing="false" onAction="#Power" text="Power" />
+                        <MenuItem mnemonicParsing="false" onAction="#Inversion" text="Inversion" />
+                        <MenuItem mnemonicParsing="false" onAction="#Equal" text="Equal" />
+                    </items>
+                  </Menu>
                </items>
             </Menu>
                 <Menu fx:id="helpMenu" mnemonicParsing="false" text="Help">
@@ -37,28 +71,76 @@
             </menus>
         </MenuBar>
     </top>
-   <center>
-      <ImageView fx:id="imageView" fitHeight="478.0" fitWidth="560.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
-   </center>
    <left>
-      <ScrollPane fx:id="scroll" prefHeight="571.0" prefWidth="184.0" BorderPane.alignment="CENTER">
-         <content>
-            <TreeView fx:id="tree" onMouseClicked="#changeImage" pickOnBounds="false" prefHeight="568.0" prefWidth="186.0">
+      <SplitPane>
+         <items>
+            <TreeView fx:id="tree" onMouseClicked="#changeImage" pickOnBounds="false" BorderPane.alignment="CENTER">
                <contextMenu>
                   <ContextMenu>
-                    <items>
-                        <Menu mnemonicParsing="false" text="Filters">
-                          <items>
-                            <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
-                              <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
+                     <items>
+                        <Menu mnemonicParsing="false" text="Edge">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Laplacian" text="Laplacian" />
                               <MenuItem mnemonicParsing="false" onAction="#Sobel" text="Sobel" />
-                          </items>
+                           </items>
                         </Menu>
-                    </items>
+                        <Menu mnemonicParsing="false" text="Smoothing">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Gaussian" text="Gaussian" />
+                              <MenuItem mnemonicParsing="false" onAction="#Mean" text="Mean" />
+                              <MenuItem mnemonicParsing="false" onAction="#Median" text="Median" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Morphological">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Erosion" text="Erosion" />
+                              <MenuItem mnemonicParsing="false" onAction="#ReconstructionByErosion" text="Reconstruction By Erosion" />
+                              <MenuItem mnemonicParsing="false" onAction="#GeodesicErosion" text="Geodesic Erosion" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#Dilation" text="Dilation" />
+                              <MenuItem mnemonicParsing="false" onAction="#ReconstructionByDilation" text="Reconstruction By Dilation" />
+                              <MenuItem mnemonicParsing="false" onAction="#GeodesicDilation" text="Geodesic Dilation" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#Opening" text="Opening" />
+                              <MenuItem mnemonicParsing="false" onAction="#OpeningByReconstruction" text="Opening By Reconstruction" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem mnemonicParsing="false" onAction="#Closing" text="Closing" />
+                              <MenuItem mnemonicParsing="false" onAction="#ClosingByReconstruction" text="Closing By Reconstruction" />
+                           </items>
+                        </Menu>
+                        <Menu mnemonicParsing="false" text="Arithmetic">
+                           <items>
+                              <MenuItem mnemonicParsing="false" onAction="#Addition" text="Addition" />
+                              <MenuItem mnemonicParsing="false" onAction="#Substraction" text="Substraction" />
+                              <MenuItem mnemonicParsing="false" onAction="#Power" text="Power" />
+                              <MenuItem mnemonicParsing="false" onAction="#Inversion" text="Inversion" />
+                              <MenuItem mnemonicParsing="false" onAction="#Equal" text="Equal" />
+                           </items>
+                        </Menu>
+                     </items>
                   </ContextMenu>
                </contextMenu>
             </TreeView>
-         </content>
-      </ScrollPane>
+         </items>
+      </SplitPane>
    </left>
+   <center>
+      <HBox fx:id="hbox" alignment="CENTER" BorderPane.alignment="CENTER">
+         <children>
+            <Pane prefHeight="571.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+            <VBox fx:id="vbox" alignment="CENTER" prefHeight="571.0" prefWidth="516.0">
+               <children>
+                  <Pane VBox.vgrow="ALWAYS" />
+                  <Pane fx:id="pane" VBox.vgrow="ALWAYS">
+                     <children>
+                        <ImageView fx:id="imageView" fitHeight="344.0" fitWidth="531.0" layoutY="78.0" nodeOrientation="INHERIT" pickOnBounds="true" preserveRatio="true" />
+                     </children>
+                  </Pane>
+                  <Pane VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+            <Pane prefHeight="571.0" prefWidth="0.0" HBox.hgrow="ALWAYS" />
+         </children>
+      </HBox>
+   </center>
 </BorderPane>

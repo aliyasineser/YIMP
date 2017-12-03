@@ -21,9 +21,11 @@ public class GeodesicDilation {
         int ydim = source.getYDim();
         for (int i = 0; i < xdim; i++) {
             for (int j = 0; j < ydim; j++) {
+                for (int k = 0; k < result.getCDim(); k++) {
+                    if(mask.getXYCByte(i, j,k) < result.getXYCByte(i, j,k))
+                    result.setXYCByte(i, j,k, mask.getXYCByte(i, j,k));
+                }
                 
-                if(mask.getXYByte(i, j) < result.getXYByte(i, j))
-                    result.setXYByte(i, j, mask.getXYByte(i, j));
             }
         }
         //Display2D.invoke(result, "geodil");

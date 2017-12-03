@@ -13,31 +13,46 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Power {
- 
-    public static Image invoke(Image sourceImage,double power){
+
+    public static Image invoke(Image sourceImage, double power) {
         Image result = sourceImage.newInstance(false);
-        double max = Double.MIN_VALUE;
-        double min = Double.MAX_VALUE;
+
+        double max[] = new double[result.getCDim()];
+        double min[] = new double[result.getCDim()];
+
+        for (int i = 0; i < result.getCDim(); i++) {
+            max[i] = Double.MIN_VALUE;
+            min[i] = Double.MAX_VALUE;
+        }
+
         for (int i = 0; i < sourceImage.getXDim(); i++) {
             for (int j = 0; j < sourceImage.getYDim(); j++) {
-                double temp = sourceImage.getXYDouble(i, j);
-                if(max < temp) max = temp;
-                if(temp < min) min = temp;
-                result.setXYDouble(i, j, Math.pow(temp, power));
+                for (int k = 0; k < result.getCDim(); k++) {
+                    double temp = sourceImage.getXYCDouble(i, j, k);
+                    if (max[k] < temp) {
+                        max[k] = temp;
+                    }
+                    if (temp < min[k]) {
+                        min[k] = temp;
+                    }
+                    result.setXYCDouble(i, j, k, Math.pow(temp, power));
+
+                }
+
             }
         }
-        
+
         for (int i = 0; i < result.getXDim(); i++) {
             for (int j = 0; j < result.getYDim(); j++) {
-                double temp = result.getXYDouble(i, j);
-                result.setXYDouble(i, j, ((temp - min) / (max-min)) );
+                for (int k = 0; k < result.getCDim(); k++) {
+                    double temp = result.getXYCDouble(i, j,k);
+                    result.setXYCDouble(i, j, k, ((temp - min[k]) / (max[k] - min[k])));
+                }
             }
         }
-        
-        Display2D.invoke(result);
-        
+
+        //Display2D.invoke(result);
         return result;
     }
-    
-    
+
 }
