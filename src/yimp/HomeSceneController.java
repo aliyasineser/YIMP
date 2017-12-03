@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TreeItem;
 import javafx.scene.control.TreeView;
 import javafx.scene.image.ImageView;
@@ -22,16 +21,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import vpt.ByteImage;
-import vpt.DoubleImage;
 import vpt.Image;
-import vpt.algorithms.display.Display2D;
-import vpt.algorithms.frequential.FFT;
 import vpt.algorithms.io.Load;
-import vpt.algorithms.io.Save;
 
 /**
- *
+ * Every function in the controller are the same in the base. 
+ * Some of them needs an image, and they take additional image.
+ * Most of them shows dialog boxes and takes parameters they need.
+ * 
  * @author aliyasineser
  */
 public class HomeSceneController implements Initializable {
@@ -50,12 +47,19 @@ public class HomeSceneController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-
-        if (System.getProperty("os.name").contains("Windows")) {
-            rootImg = new UImage("file:src\\Assets\\root.png");
-        } else {
-            rootImg = new UImage("file:src/Assets/root.png");
+        
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                rootImg = new UImage(this.getClass().getResourceAsStream("/Assets/root.png"));
+            } else {
+                rootImg = new UImage(this.getClass().getResourceAsStream("/Assets/root.png"));
+            }
+        } catch (NullPointerException e) {
+            
         }
+        
+        
+        
 
         root = new TreeItem<>(rootImg);
         tree.setRoot(root);
@@ -68,7 +72,11 @@ public class HomeSceneController implements Initializable {
         
         
     }
-
+    /**
+     * Opens the file. Allowed formats are jpg, jpeg and png. Otherwise there may be a problem.
+     * @return
+     * @throws Exception 
+     */
     public boolean openFile() throws Exception {
         FileChooser fileChooser = new FileChooser();
         configureFileChooserOpen(fileChooser);
@@ -89,7 +97,9 @@ public class HomeSceneController implements Initializable {
        
         return true;
     }
-
+    /**
+     * Laplacian operation.
+     */
     public void Laplacian() {
         Image result;
 
@@ -102,11 +112,13 @@ public class HomeSceneController implements Initializable {
         imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
 
     }
-
+    /**
+     * Gaussian operation.
+     */
     public void Gaussian() {
         Image result;
         GaussianBundle params = new GaussianBundle();
-        GaussianRequestController.showRequestBox(params, "Gaussian Parameters");
+        GaussianRequestController.showRequestBox(params, "Gaussian Parameters",this.getClass().getResource("GaussianRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!params.handleGetObject("kernelSize").equals("") && !params.handleGetObject("sigma").equals("")) {
@@ -117,11 +129,13 @@ public class HomeSceneController implements Initializable {
         }
 
     }
-
+    /**
+     * Mean operation.
+     */
     public void Mean() {
         Image result;
         MeanBundle parameters = new MeanBundle();
-        MeanRequestController.showRequestBox(parameters, "Mean operation parameters");
+        MeanRequestController.showRequestBox(parameters, "Mean operation parameters",this.getClass().getResource("MeanRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!parameters.handleGetObject("kernelSize").equals("")) {
@@ -131,11 +145,13 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Median operation.
+     */
     public void Median() {
         Image result;
         MeanBundle parameters = new MeanBundle();
-        MeanRequestController.showRequestBox(parameters, "Median operation parameters");
+        MeanRequestController.showRequestBox(parameters, "Median operation parameters",this.getClass().getResource("MeanRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!parameters.handleGetObject("kernelSize").equals("")) {
@@ -145,28 +161,36 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Sobel operation.
+     */
     public void Sobel() {
         Image result;
         SobelBundle operators = new SobelBundle();
-        SobelRequestController.showRequestBox(operators);
-        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
+        SobelRequestController.showRequestBox(operators,this.getClass().getResource("SobelRequest.fxml")); // request
+        Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue()); // get the selected image
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
-        if (!operators.handleGetObject("operatorChoice").equals("")) {
+        if (!operators.handleGetObject("operatorChoice").equals("")) { // Control
             result = Sobel.invoke(img, operators.handleGetObject("operatorChoice").toString());
             nameMap.put(result, nameMap.get(img) + "_S" + operators.handleGetObject("operatorChoice"));
+            // save the images and made it selected.
             tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
 
     }
-
+    /**
+     * In every treeview action, image gets change according to position of the mouse.
+     */
     public void changeImage() {
         if (!tree.getSelectionModel().isEmpty()) {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getValue());
         }
     }
-
+    /**
+     * Open file function operations. Formats can be arranged in here.
+     * @param fileChooser 
+     */
     private static void configureFileChooserOpen(final FileChooser fileChooser) {
         fileChooser.setTitle("Open file");
         fileChooser.setInitialDirectory(
@@ -182,11 +206,13 @@ public class HomeSceneController implements Initializable {
         fileChooser.getExtensionFilters().add(jpegFilter);
         fileChooser.getExtensionFilters().add(pngFilter);
     }
-
+    /**
+     * Erosion operation.
+     */
     public void Erosion() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Erosion operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Erosion operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -196,11 +222,13 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Dilation operation
+     */
     public void Dilation() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Dilation operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Dilation operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -210,11 +238,13 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Opening.
+     */
     public void Opening() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Opening operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Opening operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -224,11 +254,13 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Closing operation.
+     */
     public void Closing() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Closing operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Closing operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -239,11 +271,13 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Closing by reconstruction operation.
+     */
     public void ClosingByReconstruction() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Closing by reconstruction operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Closing by reconstruction operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -254,11 +288,13 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Opening by reconstruction operation.
+     */
     public void OpeningByReconstruction() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Opening by reconstruction operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Opening by reconstruction operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -269,7 +305,9 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Reconstruction by dilation operation.
+     */
     public void ReconstructionByDilation() {
         Image result;
 
@@ -285,7 +323,7 @@ public class HomeSceneController implements Initializable {
         nameMap.put(operand, getNameByUrl(file.getAbsolutePath()));
 
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Reconstruction by dilation operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Reconstruction by dilation operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -296,7 +334,9 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Reconstruction by erosion operation.
+     */
     public void ReconstructionByErosion() {
         Image result;
 
@@ -312,7 +352,7 @@ public class HomeSceneController implements Initializable {
         nameMap.put(operand, getNameByUrl(file.getAbsolutePath()));
 
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Reconstruction by erosion operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Reconstruction by erosion operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -323,7 +363,9 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Geodesic Dilation operation.
+     */
     public void GeodesicDilation() {
         Image result;
 
@@ -339,7 +381,7 @@ public class HomeSceneController implements Initializable {
         nameMap.put(operand, getNameByUrl(file.getAbsolutePath()));
 
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Geodesic dilation operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Geodesic dilation operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -350,7 +392,9 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Geodesic Erosion operation.
+     */
     public void GeodesicErosion() {
         Image result;
 
@@ -366,7 +410,7 @@ public class HomeSceneController implements Initializable {
         nameMap.put(operand, getNameByUrl(file.getAbsolutePath()));
 
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Geodesic erosion operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Geodesic erosion operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -377,11 +421,13 @@ public class HomeSceneController implements Initializable {
 
         }
     }
-
+    /**
+     * Unsharp Masking operation.
+     */
     public void Unsharp() {
         Image result;
         GaussianBundle params = new GaussianBundle();
-        GaussianRequestController.showRequestBox(params, "Unsharp Parameters");
+        GaussianRequestController.showRequestBox(params, "Unsharp Parameters",this.getClass().getResource("GaussianRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!params.handleGetObject("kernelSize").equals("") && !params.handleGetObject("sigma").equals("")) {
@@ -392,11 +438,13 @@ public class HomeSceneController implements Initializable {
         }
 
     }
-
+    /**
+     * Morphological Gradient operation.
+     */
     public void MorphologicalGradient() {
         Image result;
         KernelSeBundle operators = new KernelSeBundle();
-        KernelSeRequestController.showRequestBox(operators, "Morphological  operation parameters");
+        KernelSeRequestController.showRequestBox(operators, "Morphological  operation parameters",this.getClass().getResource("KernelSeRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
         if (!operators.handleGetObject("SE").equals("")) {
@@ -406,7 +454,9 @@ public class HomeSceneController implements Initializable {
             imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
         }
     }
-
+    /**
+     * Equal check operation.
+     */
     public void Equal() {
 
         FileChooser fileChooser = new FileChooser();
@@ -420,13 +470,15 @@ public class HomeSceneController implements Initializable {
         Image operand = Load.invoke(file.getAbsolutePath());
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         if (Equal.invoke(img, operand)) {
-            ErrorBoxController.showErrorBox("Equal Operation", "Equal", "Images are identical.");
+            ErrorBoxController.showErrorBox("Equal Operation", "Equal", "Images are identical.", this.getClass().getResource("ErrorBox.fxml"));
         } else {
-            ErrorBoxController.showErrorBox("Equal Operation", "Not Equal", "Images are not identical.");
+            ErrorBoxController.showErrorBox("Equal Operation", "Not Equal", "Images are not identical.", this.getClass().getResource("ErrorBox.fxml"));
         }
 
     }
-
+    /**
+     * Addition operation.
+     */
     public void Addition() {
         Image result;
         FileChooser fileChooser = new FileChooser();
@@ -442,8 +494,9 @@ public class HomeSceneController implements Initializable {
 
         Image operand = Load.invoke(file.getAbsolutePath());
 
-        if (img.getXDim() != operand.getXDim() || img.getYDim() != operand.getYDim()) {
-            ErrorBoxController.showErrorBox("Addition Error", "Different image sizes.", "Source and destination images must have the same size.");
+        if (img.getXDim() != operand.getXDim() || img.getYDim() != operand.getYDim() || img.getCDim() != operand.getCDim()) {
+            ErrorBoxController.showErrorBox("Addition Error", "Different image sizes.", 
+                    "Source and destination images must have the same size.", this.getClass().getResource("ErrorBox.fxml"));
             nameMap.remove(img);
             return;
         }
@@ -454,7 +507,9 @@ public class HomeSceneController implements Initializable {
         tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
         imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
     }
-
+    /**
+     * Substraction operation.
+     */
     public void Substraction() {
         Image result;
         FileChooser fileChooser = new FileChooser();
@@ -470,8 +525,9 @@ public class HomeSceneController implements Initializable {
 
         Image operand = Load.invoke(file.getAbsolutePath());
 
-        if (img.getXDim() != operand.getXDim() || img.getYDim() != operand.getYDim()) {
-            ErrorBoxController.showErrorBox("Substraction Error", "Different image sizes.", "Source and destination images must have the same size.");
+        if (img.getXDim() != operand.getXDim() || img.getYDim() != operand.getYDim() || img.getCDim() != operand.getCDim()) {
+            ErrorBoxController.showErrorBox("Substraction Error", "Different image sizes.",
+                    "Source and destination images must have the same size.", this.getClass().getResource("ErrorBox.fxml"));
             nameMap.remove(img);
             return;
         }
@@ -482,7 +538,9 @@ public class HomeSceneController implements Initializable {
         tree.getSelectionModel().getSelectedItem().getChildren().add(new TreeItem<>(VPT2IMG.invoke(result, nameMap.get(result))));
         imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
     }
-
+    /**
+     * Inversion operation.
+     */
     public void Inversion() {
 
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
@@ -501,7 +559,7 @@ public class HomeSceneController implements Initializable {
 
         Image result;
         DoubleBundle operators = new DoubleBundle();
-        DoubleRequestController.showRequestBox(operators);
+        DoubleRequestController.showRequestBox(operators,this.getClass().getResource("DoubleRequest.fxml"));
         Image img = IMG2VPT.invoke(tree.getSelectionModel().getSelectedItem().getValue());
         nameMap.put(img, tree.getSelectionModel().getSelectedItem().getValue().getFileName());
 
@@ -511,7 +569,11 @@ public class HomeSceneController implements Initializable {
         imageView.setImage(tree.getSelectionModel().getSelectedItem().getChildren().get(tree.getSelectionModel().getSelectedItem().getChildren().size() - 1).getValue());
 
     }
-
+    /**
+     * get the image name in the file url.
+     * @param url
+     * @return 
+     */
     public static String getNameByUrl(String url) {
 
         int lastIndex;
@@ -528,6 +590,13 @@ public class HomeSceneController implements Initializable {
         return withExt.substring(0, lastIndex);
     }
 
+    public void about(){
+        AboutBoxController.showBox("About", "Yeser Image Processing Tool", 
+                "By Ali Yasin Eser, 2017\nOpen file: File -> Open file\nUse filters:"+
+                        " Choose an Image -> Right click it or use Filters section to choose the filter -> See the results.",
+                this.getClass().getResource("AboutBox.fxml"));
+    }
+    
     /**
      * Exiting from Program.
      */

@@ -24,52 +24,60 @@ import javafx.stage.Stage;
 /**
  * FXML Controller class
  *
- * @author aliya
+ * @author aliyasineser
  */
-public class ErrorBoxController implements Initializable {
+public class AboutBoxController implements Initializable {
 
-    public GridPane gridWindow;  
-    public ImageView errImage;
+    public GridPane gridWindow;
+    public ImageView image;
     public Label messageLabel;
     public Label detailsLabel;
     public Button okButton;
-    
 
-    public static void showErrorBox(String windowTitle, String title, String message, URL url){
-        
-        try{
+    public static void showBox(String windowTitle, String title, String message, URL url) {
+
+        try {
             Stage errorWindow = new Stage();
             errorWindow.initModality(Modality.APPLICATION_MODAL);
             errorWindow.setTitle(windowTitle);
+
             Parent errorLayout = FXMLLoader.load(url, new ErrorBundle(title, message));
             Scene scene = new Scene(errorLayout);
             errorWindow.setScene(scene);
             errorWindow.showAndWait();
-        }
-        catch(Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
     }
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        //errImage.setImage(new Image("file:src/Assets/error.png"));
         messageLabel.setText(rb.getString("title"));
         detailsLabel.setText(rb.getString("message"));
         //enter'a basildiginda hata mesaji ekrani kapanir
-        okButton.setOnKeyPressed((KeyEvent key)->{
+        okButton.setOnKeyPressed((KeyEvent key) -> {
             if (key.getCode() == KeyCode.ENTER) {
                 okButton.fire();
             }
         });
+
+        try {
+            if (System.getProperty("os.name").contains("Windows")) {
+                image.setImage(new Image(this.getClass().getResourceAsStream("/Assets/yimp.png")));
+            } else {
+                image.setImage(new Image(this.getClass().getResourceAsStream("/Assets/yimp.png")));
+            }
+        } catch (NullPointerException e) {
+            
+        }
+
     }
 
     public void closeWindow() {
 
         ((Stage) (gridWindow.getScene().getWindow())).close();
     }
-
 }

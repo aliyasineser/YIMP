@@ -14,7 +14,12 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Gaussian {
-
+    /**
+     * Gaussian kernel creation function
+     * @param length kernel size 
+     * @param weight sigma
+     * @return 
+     */
     public static double[][] Calculate(int length, double weight) {
         double[][] Kernel = new double[length][];
         for (int i = 0; i < length; i++) {
@@ -48,6 +53,13 @@ public class Gaussian {
         return Kernel;
     }
 
+    /**
+     * Gaussian filter
+     * @param source image 
+     * @param length kernelsize
+     * @param sigma sigma
+     * @return 
+     */
     public static Image invoke(Image source, int length, double sigma) {
 
         double[][] kernelCoef = Calculate(length, sigma);

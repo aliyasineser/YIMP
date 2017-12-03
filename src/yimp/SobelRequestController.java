@@ -33,12 +33,13 @@ public class SobelRequestController implements Initializable {
     SobelBundle paramBundle;
     public AnchorPane pane;
     
-    public static void showRequestBox(SobelBundle bundle){
+    public static void showRequestBox(SobelBundle bundle, URL url){
         try{
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
             requestWindow.setTitle("Sobel Parameters");
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/SobelRequest.fxml"), bundle);
+            Parent errorLayout = FXMLLoader.load(url , bundle);
+            
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
@@ -68,7 +69,8 @@ public class SobelRequestController implements Initializable {
     public void calculate(){
         
         if(operatorChoiceBox.getSelectionModel().isEmpty())
-            ErrorBoxController.showErrorBox("Error", "Selection Error", "Non of the operators are selected.");
+            ErrorBoxController.showErrorBox("Error", "Selection Error", "Non of the operators are selected."
+            , this.getClass().getResource("ErrorBox.fxml"));
         else{
             paramBundle.setObject( "operatorChoice", operatorChoiceBox.getSelectionModel().getSelectedItem().toString());
             closeWindow();

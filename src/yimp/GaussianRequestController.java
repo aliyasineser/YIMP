@@ -31,13 +31,19 @@ public class GaussianRequestController implements Initializable {
     public Button calculateButton;
     GaussianBundle paramBundle;
     public AnchorPane pane;
-
-    public static void showRequestBox(GaussianBundle bundle,String title) {
+    /**
+     * Show the box
+     * @param bundle info bundle
+     * @param url 
+     * @param title box title
+     */
+    public static void showRequestBox(GaussianBundle bundle,String title, URL url) {
         try {
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
             requestWindow.setTitle(title);
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/GaussianRequest.fxml"), bundle);
+            Parent errorLayout = FXMLLoader.load(url, bundle);
+            
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
@@ -75,13 +81,18 @@ public class GaussianRequestController implements Initializable {
 
     }
 
+    /**
+     * control of infos
+     */
     public void calculate() {
         if (kernelSizeField.getText().equals("") || sigmaField.getText().equals("")) {
-            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
+            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.", 
+                    this.getClass().getResource("ErrorBox.fxml"));
         } else {
-            int kSize = Integer.valueOf(kernelSizeField.getText()).intValue();
+            int kSize = Integer.valueOf(kernelSizeField.getText());
             if (kSize % 2 == 0 || kSize <= 1) {
-                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number except one.");
+                ErrorBoxController.showErrorBox("Error", "Kernel Size Error", "Kernel size should be a positive odd number except one.", 
+                        this.getClass().getResource("ErrorBox.fxml"));
             } else {
                 paramBundle.setObject("kernelSize", Integer.valueOf(kernelSizeField.getText()));
                 paramBundle.setObject("sigma", Double.valueOf(sigmaField.getText()));
@@ -90,6 +101,9 @@ public class GaussianRequestController implements Initializable {
         }
     }
 
+    /**
+     * Closes the window
+     */
     public void closeWindow() {
 
         ((Stage) (pane.getScene().getWindow())).close();

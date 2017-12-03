@@ -31,12 +31,13 @@ public class DoubleRequestController implements Initializable {
     DoubleBundle paramBundle;
     public AnchorPane pane;
 
-    public static void showRequestBox(DoubleBundle bundle) {
+    public static void showRequestBox(DoubleBundle bundle, URL url) {
         try {
             Stage requestWindow = new Stage();
             requestWindow.initModality(Modality.APPLICATION_MODAL);
             requestWindow.setTitle("Parameters");
-            Parent errorLayout = FXMLLoader.load(new URL("file:src/yimp/DoubleRequest.fxml"), bundle);
+            Parent errorLayout = FXMLLoader.load(url, bundle);
+            
             Scene scene = new Scene(errorLayout);
             requestWindow.setScene(scene);
             requestWindow.showAndWait();
@@ -67,11 +68,13 @@ public class DoubleRequestController implements Initializable {
 
     public void calculate() {
         if (sigmaField.getText().equals("")) {
-            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.");
+            ErrorBoxController.showErrorBox("Error", "Empty Field Error", "All fields must be filled.", 
+                    this.getClass().getResource("ErrorBox.fxml"));
         } else {
             double kSize = Double.valueOf(sigmaField.getText());
             if (kSize < 0) {
-                ErrorBoxController.showErrorBox("Error", "Value Error", "Double value must be positive.");
+                ErrorBoxController.showErrorBox("Error", "Value Error", "Double value must be positive.", 
+                        this.getClass().getResource("ErrorBox.fxml"));
             } else {
                 paramBundle.setObject("value", kSize);
                 closeWindow();

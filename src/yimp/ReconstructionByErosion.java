@@ -24,7 +24,7 @@ public class ReconstructionByErosion {
             current = GeodesicErosion.invoke(temp, mask, kernelSize, SE);            
         }while(!Equal.invoke(current, temp));
         result = current;
-        Display2D.invoke(result, "geodil");
+        //Display2D.invoke(result, "geodil");
         return result;
     }
     

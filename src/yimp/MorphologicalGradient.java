@@ -22,7 +22,7 @@ public class MorphologicalGradient {
         Image eroted = Erosion.invoke(source, kernelSize, SE);
         result = Substraction.invoke(dilated, eroted);
         
-        Display2D.invoke(result,"after");
+        //Display2D.invoke(result,"after");
         
         return result;
     }
