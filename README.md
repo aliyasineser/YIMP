@@ -2,21 +2,21 @@
 Digital Image Processing Project
 
 YIMP is a Lightweight Image processing tool. It allows you to see how the filters and operators effect on image. </br>
-Features: </br>
-1. Smoothing filters</br>
+**Features:** </br>
+1. Smoothing filters
 - Gaussian 
 - Mean 
 - Median 
-2. Edge filters </br>
+2. Edge filters 
 - Laplacian of Gaussian 
 - Sobel
-3. Arithmetic Operations</br>
+3. Arithmetic Operations
 - Addition
 - Substraction
 - Power
 - Inversion
 - Equal
-4. Morphological Operations</br>
+4. Morphological Operations
 - Erosion(Standart, Geodesic, Reconstruction)
 - Dilation(Standart, Geodesic, Reconstruction)
 - Opening(Standart, Reconstruction)
