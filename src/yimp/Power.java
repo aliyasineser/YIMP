@@ -13,7 +13,12 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Power {
-
+    /**
+     * Applies power operation on an image.
+     * @param sourceImage
+     * @param power
+     * @return 
+     */
     public static Image invoke(Image sourceImage, double power) {
         Image result = sourceImage.newInstance(false);
 

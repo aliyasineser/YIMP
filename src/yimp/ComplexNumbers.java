@@ -6,7 +6,7 @@
 package yimp;
 
 /**
- *
+ * Class for fft. Complex numbers
  * @author aliyasineser
  */
 class ComplexNumber {

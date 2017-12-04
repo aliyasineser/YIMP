@@ -14,7 +14,12 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Mean {
-
+    /**
+     * Applies mean filter.
+     * @param source
+     * @param kernelSize
+     * @return 
+     */
     public static Image invoke(Image source, int kernelSize) {
         double[][] kernelCoef = new double[kernelSize][];
         for (int i = 0; i < kernelSize; i++) {

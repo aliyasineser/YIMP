@@ -13,7 +13,14 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Opening {
- 
+    /**
+     * 
+     * Applies opening on an image.
+     * @param source
+     * @param kernelSize
+     * @param SE
+     * @return 
+     */
     public static Image invoke(Image source, int kernelSize, String SE){
         Image result=null;
         

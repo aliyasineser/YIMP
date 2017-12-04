@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
- *
+ * Bundle for transferring single double value.
  * @author aliyasineser
  */
 public class DoubleBundle extends ResourceBundle{

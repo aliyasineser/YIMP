@@ -11,7 +11,7 @@ import vpt.Image;
 import vpt.algorithms.display.Display2D;
 
 /**
- *
+ * Not working correctly. FFT Class
  * @author aliyasineser
  */
 public class FastFourierTransform {

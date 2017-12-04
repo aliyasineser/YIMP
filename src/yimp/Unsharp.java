@@ -14,15 +14,20 @@ import static yimp.Gaussian.Calculate;
  * @author aliyasineser
  */
 public class Unsharp {
-    
-     public static Image invoke(Image source, int length, double sigma) {
-         
+    /**
+     * Applies unsharp masking.
+     * @param source
+     * @param length
+     * @param sigma
+     * @return 
+     */
+    public static Image invoke(Image source, int length, double sigma) {
+
         Image result = Gaussian.invoke(source, length, sigma);
         result = Substraction.invoke(source, result);
         result = Addition.invoke(source, result);
         //Display2D.invoke(result,"after");
         return result;
     }
-    
-    
+
 }

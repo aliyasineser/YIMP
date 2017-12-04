@@ -14,7 +14,11 @@ import vpt.algorithms.io.Load;
  * @author aliyasineser
  */
 public class IMG2VPT {
-
+    /**
+     * Converts javafx image to vpt image.
+     * @param source
+     * @return 
+     */
     public static Image invoke(UImage source) {
         return Load.invoke(source.getURL().substring(source.getURL().indexOf(':')+1) );
     }

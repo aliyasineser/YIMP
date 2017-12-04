@@ -9,11 +9,17 @@ import vpt.Image;
 import static yimp.Gaussian.Calculate;
 
 /**
- *
+ * Addition of Images
  * @author aliyasineser
  */
 public class Addition {
 
+    /**
+     * Adds 2 images. Dimensions must have to be equal.
+     * @param source
+     * @param dest
+     * @return 
+     */
     public static Image invoke(Image source, Image dest) {
         Image result = source.newInstance(false);
 

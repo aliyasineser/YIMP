@@ -9,11 +9,18 @@ import vpt.Image;
 import vpt.algorithms.display.Display2D;
 
 /**
- *
+ * Closing operator
  * @author aliyasineser
  */
 public class Closing {
     
+    /**
+     * Applies closing operator on an image.
+     * @param source
+     * @param kernelSize
+     * @param SE structural element
+     * @return 
+     */
     public static Image invoke(Image source, int kernelSize, String SE){
         Image result=null;
         

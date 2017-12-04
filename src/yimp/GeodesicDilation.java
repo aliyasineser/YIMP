@@ -14,7 +14,14 @@ import vpt.algorithms.io.Load;
  * @author aliyasineser
  */
 public class GeodesicDilation {
- 
+    /**
+     * Applies geodesic dilation on an image.
+     * @param source
+     * @param mask
+     * @param kernelSize
+     * @param SE
+     * @return 
+     */
     public static Image invoke(Image source, Image mask,int kernelSize, String SE) {
         Image result = Dilation.invoke(source, kernelSize, SE);
         int xdim = source.getXDim();

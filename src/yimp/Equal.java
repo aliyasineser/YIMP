@@ -8,11 +8,16 @@ package yimp;
 import vpt.Image;
 
 /**
- *
+ * Equal check class
  * @author aliyasineser
  */
 public class Equal {
-
+    /**
+     * Checks that two images are identical to each other.
+     * @param source
+     * @param dest
+     * @return 
+     */
     public static boolean invoke(Image source, Image dest) {
 
         if (source.getXDim() != dest.getXDim() || source.getYDim() != dest.getYDim() || source.getCDim() != dest.getCDim()) {

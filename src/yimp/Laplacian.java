@@ -13,7 +13,11 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class Laplacian {
-
+    /**
+     * Applies laplacian filter.
+     * @param source
+     * @return 
+     */
     public static Image invoke(Image source) {
         Image result = null;
         

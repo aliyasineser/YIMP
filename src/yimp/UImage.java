@@ -11,7 +11,7 @@ import javafx.scene.image.Image;
 import sun.plugin2.util.SystemUtil;
 
 /**
- *
+ * Located image class.
  * @author aliyasineser
  */
 public class UImage extends Image {

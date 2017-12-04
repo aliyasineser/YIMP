@@ -13,7 +13,12 @@ import vpt.algorithms.io.Save;
  * @author aliyasineser
  */
 public class VPT2IMG {
-    
+    /**
+     * Converts a vpt image to javafx image.
+     * @param source
+     * @param name
+     * @return 
+     */
     public static UImage invoke(vpt.Image source, String name) {
         UImage result = null;
         String fullPath;

@@ -13,7 +13,14 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class GeodesicErosion {
-
+    /**
+     * Applies geodesic erosion on an image.
+     * @param source
+     * @param mask
+     * @param kernelSize
+     * @param SE
+     * @return 
+     */
     public static Image invoke(Image source, Image mask, int kernelSize, String SE) {
         Image result = Erosion.invoke(source, kernelSize, SE);
         int xdim = source.getXDim();

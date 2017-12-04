@@ -10,7 +10,12 @@ package yimp;
  * @author aliyasineser
  */
 public class StructuralElement {
-    
+    /**
+     * Creates and returns a kernel for morphological operations.
+     * @param kernelSize
+     * @param SE
+     * @return 
+     */
     public static boolean[][] createKernel(int kernelSize, String SE){
         boolean[][] kernel = new boolean[kernelSize][kernelSize];
         

@@ -13,7 +13,14 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class ReconstructionByErosion {
-    
+    /**
+     * Applies reconstruction by eroesion on an image.
+     * @param source
+     * @param mask
+     * @param kernelSize
+     * @param SE
+     * @return 
+     */
     public static Image invoke(Image source, Image mask, int kernelSize, String SE) {
         Image result=null;
         

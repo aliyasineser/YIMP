@@ -17,6 +17,12 @@ import vpt.algorithms.display.Display2D;
  */
 public class Median {
 
+    /**
+     * Applies Median filter. Can be used to fix salt-pepper images.
+     * @param source
+     * @param kernelSize
+     * @return 
+     */
     public static Image invoke(Image source, int kernelSize) {
 
         int[] list = new int[kernelSize * kernelSize];

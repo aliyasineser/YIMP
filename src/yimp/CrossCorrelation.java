@@ -14,7 +14,12 @@ import vpt.algorithms.display.Display2D;
  * @author aliyasineser
  */
 public class CrossCorrelation {
-
+    /**
+     * Applies Cross correlation on an image.
+     * @param source
+     * @param mask
+     * @return 
+     */
     public static Image invoke(Image source, double[][] mask) {
         Image result = source.newInstance(false);
         Image operandImage = new ByteImage(result.getXDim() + mask.length - 1, result.getYDim() + mask.length - 1, result.getCDim());

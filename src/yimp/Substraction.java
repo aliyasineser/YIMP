@@ -12,7 +12,12 @@ import vpt.Image;
  * @author aliyasineser
  */
 public class Substraction {
-
+    /**
+     * Substracts 2 images.
+     * @param source
+     * @param dest
+     * @return 
+     */
     public static Image invoke(Image source, Image dest) {
         Image result = source.newInstance(false);
 

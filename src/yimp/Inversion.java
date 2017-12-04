@@ -12,7 +12,11 @@ import vpt.Image;
  * @author aliyasineser
  */
 public class Inversion {
- 
+    /**
+     * Applies inversion on an image.
+     * @param source
+     * @return 
+     */
      public static Image invoke(Image source) {
          Image result = source.newInstance(false);
          int xdim = source.getXDim();

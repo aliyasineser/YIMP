@@ -13,7 +13,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 /**
- *
+ * Error bundle for messages.
  * @author aliya
  */
 public class ErrorBundle extends ResourceBundle {
